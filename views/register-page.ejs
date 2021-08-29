@@ -8,37 +8,26 @@
   crossorigin="anonymous"> 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css" integrity="sha384-wESLQ85D6gbsF459vf1CiZ2+rr+CsxRY0RpiF1tLlQpDnAgg6rwdsUF1+Ics2bni" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Register</title>
 </head>
 <body>
-  <div class="my-5">
-    <h2>Register</h2>
-    <form class="my-4 ">
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-4 col-md-4 col-lg-2">
-        <input 
-        type="email"
-        class="form-control"
-        placeholder="enter Email Address"
-        ></input>
-        </div>
+  <div class="container">
+  <div class="d-flex justify-content-center align-items-center">
+    <form class="col-lg-4 col-md-8 col-sm-10 my-5">
+      <h2>Register</h2>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
       </div>
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-4 col-md-4 col-lg-2">
-        <input 
-        type="password"
-        class="form-control"
-        placeholder="enter Password"
-        ></input>
-        </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
       </div>
-      <div class="col-lg-2 col-sm-2 col-md-2 create-btn">
-        <button type="button" class="btn btn-primary my-4 px-4">Login</button>
-      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <p class="my-2">Already have Account <a href="/login-page">Login</a></p>
     </form>
-    <p>Dont have Account <a href="/login-page">Login</a></p>
   </div>
+</div>
 </body>
 </html>
