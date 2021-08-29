@@ -20,6 +20,13 @@ app.get('/', async (req, res) => {
     return res.render('home-page');
 })
 
+app.get('/login-page', async (req, res) => {
+    return res.render('login-page');
+})
+
+app.get('/register-page', async (req, res) => {
+    return res.render('register-page');
+})
 const PORT = process.env.PORT;
 app.listen(PORT, async (err) => {
     console.log('Server is running on localhost:' + PORT);
