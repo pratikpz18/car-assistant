@@ -28,19 +28,10 @@ app.use(session({
     }
 }))
 
-app.get('/', async (req, res) => {
-    req.session.UID = 1; //test
-    return res.render('home-page');
-})
+//Routes
+app.use('/', require("./routes/login-signup"));
+app.use('/', require("./routes/home-page"));
 
-app.get('/login-page', async (req, res) => {
-    console.log(req.session); //test
-    return res.render('login-page');
-})
-
-app.get('/register-page', async (req, res) => {
-    return res.render('register-page');
-})
 const PORT = process.env.PORT;
 app.listen(PORT, async (err) => {
     console.log('Server is running on localhost:' + PORT);
