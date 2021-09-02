@@ -1,33 +1,33 @@
 {
-    "ownerID": 657448,
-    "details": {
-     "name": "Sample Name",
-     "email": "sample@gmail.com",
-     "contactNo": 9876543210
-    },
-    "allCars": {
-     "car2ID": {
-      "carDetails": {
-       "brand": "Maruti Suzuki",
-       "model": "Ertiga"
-      },
-      "allStatus": {
-       "suspensionLevel": 45,
-       "engineTemp": 60,
-       "batteryVoltage": 11.5
-      }
-     },
-     "car1ID": {
-      "carDetails": {
-       "brand": "Hyundai",
-       "model": "i10"
-      },
-      "allStatus": {
-       "suspensionLevel": 50,
-       "engineTemp": 50,
-       "batteryVoltage": 12
-      }
-     }
-    }
+ "ownerID": "owner1@cma.com",
+ "details": {
+  "name": "Sample Name",
+  "email": "sample@gmail.com",
+  "contactNo": 9876543210,
+  "password":"abcd123"
+ },
+ "allCars": {
+  "car2ID": {
+   "carDetails": {
+    "brand": "Maruti Suzuki",
+    "model": "Ertiga"
+   },
+   "allStatus": {
+    "suspensionLevel": 45,
+    "engineTemp": 60,
+    "batteryVoltage": 11.5
+   }
+  },
+  "car1ID": {
+   "carDetails": {
+    "brand": "Hyundai",
+    "model": "i10"
+   },
+   "allStatus": {
+    "suspensionLevel": 50,
+    "engineTemp": 50,
+    "batteryVoltage": 12
+   }
+  }
+ }
 }
-
