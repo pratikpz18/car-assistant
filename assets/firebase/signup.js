@@ -1,14 +1,27 @@
-//updates confirmation page based on user inputs.
-function confirmpage() {
-    document.getElementById("Name2").innerHTML = document.getElementById('fullName').value;
-    document.getElementById("email2").innerHTML = document.getElementById('email').value;
-    document.getElementById("birth").innerHTML = document.getElementById('birthdate').value;
-}
-
 //Signup using email and password.
 function signUp() {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    let contactNo = document.getElementById('contactNo').value;
+    let confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!email || !password || !contactNo || password.length < 6 || password != confirmPassword) {
+        let errorMessage = "Please, enter all the details properly";
+        Swal.fire({
+                icon: 'error',
+                title: 'Opps...',
+                text: errorMessage
+            })
+            .then(() => {
+                location.reload();
+            })
+        return;
+    }
+    
+    // Update the button description after click
+    const button = document.getElementById('signup-btn');
+    button.disabled = true;
+    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -19,65 +32,31 @@ function signUp() {
                 details: {
                     name: document.getElementById('fullName').value,
                     email: document.getElementById('email').value,
-                    birthdate: document.getElementById('birthdate').value,
-                },
-                readingInfo: {
-                    storiesAlreadyRead: 0,
-                    points: {
-                        totalPoints: 0,
-                        weeks: {
-                            start: getWeekNumber(new Date(getFormattedDate(new Date())))
-                        }
-                    }
+                    contactNo: document.getElementById('contactNo').value,
                 }
             };
 
-            firebase.database().ref(`Admin/Users/${UID}`).set(updates)
+            firebase.database().ref(`carOwners/${UID}`).set(updates)
                 .then(() => {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Account created successfully !',
-                    })
-                    .then(() => {
-                            window.location = "./read-story.html";
+                            icon: 'success',
+                            title: 'Account created successfully !',
+                        })
+                        .then(() => {
+                            window.location = "../index.html";
                         })
                 })
-                .catch((error) => {
-                    let errorMessage = error.message;
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Opps...',
-                        message: errorMessage
-                    })
-                    .then(() => {
-                            location.reload();
-                        })
-                });
         })
         .catch((error) => {
             let errorMessage = error.message;
             Swal.fire({
-                icon: 'error',
-                title: 'Opps...',
-                message: errorMessage
-            })
-            .then(() => {
+                    icon: 'error',
+                    title: 'Opps...',
+                    text: errorMessage
+                })
+                .then(() => {
                     location.reload();
                 })
-        });
-}
-
-//To check password length and show an alert.
-function checkpass() {
-    var password = document.getElementById('password').value;
-    var confirmPassword = document.getElementById('confirmPassword').value;
-    if (password.length < 8) {
-        alert("Password length should be minimum 8 characters")
-        location.reload();
-    }
-    else if (password != confirmPassword) {
-        alert("Passwords don't match, please enter correctly")
-        location.reload();
-    }
+        })
 }
 

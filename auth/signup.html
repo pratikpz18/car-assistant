@@ -17,18 +17,12 @@
     <link rel="stylesheet" href="../assets/vendor/icon-set/style.css">
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="../assets/css/theme.min.css">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
     <!-- Firebase Libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
     <!--Firebase Config-->
     <Script src="../assets/firebase/auth.js"></Script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js"></script>
- 
   </head>
 
   <body class="footer-offset has-navbar-vertical-aside navbar-vertical-aside-show-xl">
@@ -135,34 +129,6 @@
             }'>
         <div class="row justify-content-lg-center">
           <div class="col-lg-8">
-            <!-- Step -->
-            <ul id="addUserStepFormProgress" class="js-step-progress step step-sm step-icon-sm step step-inline step-item-between mb-3 mb-md-5">
-              <li class="step-item">
-                <a class="step-content-wrapper" href="javascript:;"
-                    data-hs-step-form-next-options='{
-                    "targetSelector": "#addUserStepProfile"
-                  }'>
-                  <span class="step-icon step-icon-soft-dark">1</span>
-                  <div class="step-content">
-                    <span class="step-title">Profile</span>
-                  </div>
-                </a>
-              </li>
-
-              <li class="step-item" onclick="confirmpage(),checkpass()">
-                <a class="step-content-wrapper" href="javascript:;"
-                    data-hs-step-form-next-options='{
-                    "targetSelector": "#addUserStepConfirmation"
-                  }'>
-                  <span class="step-icon step-icon-soft-dark">2</span>
-                  <div class="step-content">
-                    <span class="step-title">Confirmation</span>
-                  </div>
-                </a>
-              </li>
-            </ul>
-            <!-- End Step -->
-
             <!-- Content Step Form -->
             <div id="addUserStepFormContent">
               <!-- Card -->
@@ -186,7 +152,7 @@
                   </div>
 
                   <div class="row form-group">
-                    <label for="passwordLabel" class="col-sm-3 col-form-label input-label">Password <span class="input-label-secondary">(Minimum length 8)</span></label>
+                    <label for="passwordLabel" class="col-sm-3 col-form-label input-label">Password <span class="input-label-secondary"><br>(Minimum length 8)</span></label>
                     <div class="col-sm-9">
                       <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" aria-label="Enter password">
                     </div>
@@ -200,9 +166,9 @@
                   </div>
 
                   <div class="row form-group">
-                    <label class="col-sm-3 col-form-label input-label" for="birthday">Birthdate:</label>
+                    <label class="col-sm-3 col-form-label input-label" for="contactNo">Contact No.:</label>
                     <div class="col-sm-9">
-                      <input type="date" id="birthdate" name="birthdate" class="form-control" >
+                      <input type="tel" id="contactNo" name="contactNo" class="form-control" placeholder="Contact No">
                     </div>
                   </div>
                 
@@ -213,69 +179,11 @@
 
                 <!-- Footer -->
                 <div class="card-footer d-flex justify-content-end align-items-center">
-                    <button type="button" class="btn btn-primary" onclick="confirmpage(),checkpass()" 
-                            data-hs-step-form-next-options='{
-                              "targetSelector": "#addUserStepConfirmation"
-                            }'>
-                      Next <i class="tio-chevron-right"></i>
-                    </button>
+                    <button id="signup-btn" type="button" class="btn btn-primary" onclick="signUp()">Signup</button>
                 </div>
                 <!-- End Footer -->
               </div>
               <!-- End Card -->
-
-              <div id="addUserStepConfirmation" class="card card-lg border-secondary shadow-lg" style="display: none;">
-                <!-- Profile Cover -->
-                <div class="profile-cover">
-                  <div class="profile-cover-img-wrapper">
-                    <img class="profile-cover-img" src="./assets/img/1920x400/img1.jpg" alt="Image Description">
-                  </div>
-                </div>
-                <!-- End Profile Cover -->
-
-                <!-- Avatar -->
-                <div class="avatar avatar-xxl avatar-circle avatar-border-lg profile-cover-avatar">
-                  <img class="avatar-img" id="myImg" 
-                  src="./assets/img/160x160/img1.jpg" 
-                  alt="Image Description">
-                </div>
-                <!-- End Avatar -->
-
-                <!-- Body -->
-                <div class="card-body">
-                  <dl class="row">
-                    <dt class="col-sm-6 text-sm-right">Name:</dt>
-                    <dd class="col-sm-6" id="Name2"></dd>
-
-                    <dt class="col-sm-6 text-sm-right">Email:</dt>
-                    <dd class="col-sm-6" id="email2"></dd>
-
-                    <!-- <dt class="col-sm-6 text-sm-right" id="noc">Number of Childs:</dt>
-                    <dd class="col-sm-6" id="ns"></dd> -->
-
-                    <dt class="col-sm-6 text-sm-right" id="birthd">BirthDate:</dt>
-                    <dd class="col-sm-6" id="birth"></dd>
-                  </dl>
-                  <!-- End Row -->
-                </div>
-                <!-- End Body -->
-
-                <!-- Footer -->
-                <div class="card-footer d-sm-flex align-items-sm-center">
-                  <button type="button" class="btn btn-ghost-secondary mb-2 mb-sm-0"
-                      data-hs-step-form-prev-options='{
-                        "targetSelector": "#addUserStepProfile"
-                      }'>
-                    <i class="tio-chevron-left"></i> Previous step
-                  </button>
-
-                  <div class="ml-auto">
-                    <!-- <button type="button" class="btn btn-white mr-2">Save in drafts</button> -->
-                    <button id="addUserFinishBtn" type="button" onclick="signUp()" class="btn btn-primary">Confirm Details</button>
-                  </div>
-                </div>
-                <!-- End Footer -->
-              </div>
             </div>
             <!-- End Content Step Form -->
           </div>
@@ -288,7 +196,7 @@
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy;  Book Reader <span class="d-none d-sm-inline-block">2021 twoPointers.</span></p>
+              <p class="font-size-sm mb-0">&copy;  Car Assistant <span class="d-none d-sm-inline-block">2021 twoPointers.</span></p>
             </div>
             <div class="col-auto">
               <div class="d-flex justify-content-end">
@@ -314,51 +222,12 @@
     <!-- JS Implementing Plugins -->
     <script src="../assets/js/vendor.min.js"></script>
     <script src="../assets/js/theme.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../assets/vendor/sweetalert2@10.js"></script>
     
     <!-- Firebase -->
     <script src="../assets/firebase/common.js"></script>
     <script src="../assets/firebase/signup.js"></script>
 
-    <!-- JS Plugins Init. -->
-    <script>
-      $(document).on('ready', function () {
-        // INITIALIZATION OF STEP FORM
-        // =======================================================
-        $('.js-step-form').each(function () {
-          var stepForm = new HSStepForm($(this), {
-            finish: function() {
-              $("#addUserStepFormProgress").hide();
-              $("#addUserStepFormContent").hide();
-              $("#successMessageContent").show();
-            }
-          }).init();
-        });
-
-        // INITIALIZATION OF MASKED INPUT
-        // =======================================================
-        $('.js-masked-input').each(function () {
-          var mask = $.HSCore.components.HSMask.init($(this));
-        });
-
-        // INITIALIZATION OF SELECT2
-        // =======================================================
-        $('.js-select2-custom').each(function () {
-          var select2 = $.HSCore.components.HSSelect2.init($(this));
-        });
-
-        // INITIALIZATION OF ADD INPUT FILED
-        // =======================================================
-        $('.js-add-field').each(function () {
-          new HSAddField($(this), {
-            addedField: function() {
-              $('.js-add-field .js-select2-custom-dynamic').each(function () {
-                var select2dynamic = $.HSCore.components.HSSelect2.init($(this));
-              });
-            }
-          }).init();
-        });
-      });
-    </script>
   </body>
 </html>
+
