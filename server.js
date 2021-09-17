@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors')
+const session = require('express-session');
 
 let app = express();
 app.use(cors());
@@ -16,17 +17,21 @@ app.use(bodyParser.json());
 app.use(express.json({}));
 dotenv.config();
 
-app.get('/', async (req, res) => {
-    return res.render('home-page');
-})
+app.set('trust proxy', 1);
+const secretKey = process.env.SECRET_SESSION_KEY;
+app.use(session({
+    secret: secretKey,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 3600000 // 1 hr
+    }
+}))
 
-app.get('/login-page', async (req, res) => {
-    return res.render('login-page');
-})
+//Routes
+app.use('/', require("./routes/login-signup"));
+app.use('/', require("./routes/home-page"));
 
-app.get('/register-page', async (req, res) => {
-    return res.render('register-page');
-})
 const PORT = process.env.PORT;
 app.listen(PORT, async (err) => {
     console.log('Server is running on localhost:' + PORT);
