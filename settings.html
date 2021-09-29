@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title -->
-    <title>Settings</title>
+    <title>Home Page</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="./assets/img/favicon.png">
     <!-- Font -->
@@ -97,7 +97,7 @@
             <!-- Logo -->
               <a class="navbar-brand" href="./index.html">
                 <img class="navbar-brand-logo" src="./assets/img/logo.jpg" alt="Logo">
-                <img class="navbar-brand-logo-mini" src="./assets/img/favicon.png" alt="Logo">
+                <img class="navbar-brand-logo-mini" src="./assets/img/logo.jpg" alt="Logo">
               </a>
             <!-- End Logo -->
 
@@ -134,6 +134,13 @@
                   <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Settings</span>
                 </a>
               </li>
+              
+              <li class="nav-item">
+                <a class="js-nav-tooltip-link nav-link " href="./car_settings.html" title="Sales Report" data-placement="left">
+                  <i class="tio-trending-up nav-icon"></i>
+                  <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Car Settings</span>
+                </a>
+              </li>
               <!-- End Stores -->
 
               <!-- Account -->
@@ -157,32 +164,69 @@
     <!-- ========== MAIN CONTENT ========== -->
 
     <main id="content" role="main" class="main">
-      <!-- Page Header Content -->
-    <!--  <div class="bg-dark">
-        <div class="content container-fluid">
-          <div class="page-header page-header-light">
-            <h1 class="page-header-title" id="welcomeName">Welcome!</h1>
-            <p class="page-header-text"></p>
-          </div>
-        </div>
-      </div>
-    -->
-      <!-- Page Header End -->
+      <!-- Step Form -->
+      <form class="js-step-form py-md-5"
+            data-hs-step-form-options='{
+              "progressSelector": "#addUserStepFormProgress",
+              "stepsSelector": "#addUserStepFormContent",
+              "endSelector": "#addUserFinishBtn",
+              "isValidate": false
+            }'>
+        <div class="row justify-content-lg-center">
+          <div class="col-lg-8">
+            <!-- Step -->
+            <!-- End Step -->
 
-      <!-- Content -->
-      <div class="content container-fluid">
-        <div class="card mb-3 mb-lg-5 border-secondary shadow-lg">
-          <div class="card-body">
+            <!-- Content Step Form -->
+            <div id="addUserStepFormContent">
+              <!-- Card -->
+              <div id="addUserStepProfile" class="card card-lg active border-secondary shadow-lg">
+                <!-- Body -->
+                <div class="card-body">
+                  <div class="row form-group">
+                    <label class="col-sm-3 col-form-label input-label">Contact Number</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="contactNumber" placeholder="Contact Number">
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <label for="email" class="col-sm-3 col-form-label input-label">Email</label>
+                    <div class="col-sm-9">
+                      <input type="email" class="form-control" id="email" placeholder="abc@example.com" aria-label="clarice@example.com">
+                    </div>
+                  </div>
+                
+                  </div>
+
+                </div>
+                <!-- End Body -->
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn btn-primary" onclick="confirmpage(),checkpass()" 
+                            data-hs-step-form-next-options='{
+                              "targetSelector": "#addUserStepConfirmation"
+                            }'>
+                      Update
+                    </button>
+                </div>
+                <!-- End Footer -->
+              </div>
+              <!-- End Card -->
+            </div>
+            <!-- End Content Step Form -->
           </div>
         </div>
-      </div>
-       
-      <!-- End Content -->
+        <!-- End Row -->
+      </form>
+      <!-- End Step Form -->
+
       <!-- Footer -->
         <div class="footer">
           <div class="row justify-content-between align-items-center">
             <div class="col">
-              <p class="font-size-sm mb-0">&copy; Car Assistant <span class="d-none d-sm-inline-block">2021 twoPointers.</span></p>
+              <p class="font-size-sm mb-0">&copy;  Car Assistant <span class="d-none d-sm-inline-block">2021 twoPointers.</span></p>
             </div>
             <div class="col-auto">
               <div class="d-flex justify-content-end">
@@ -215,7 +259,6 @@
     
     <!-- Custom JS -->
     <Script src="./assets/firebase/common.js"></Script>
-    <Script src="./assets/firebase/settings.js"></Script>
 
     <!-- JS Plugins Init. -->
     <script>
