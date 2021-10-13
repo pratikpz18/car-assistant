@@ -11,9 +11,9 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
 var details=[];
 function showStats(data){
+    console.log(Object.values(data.allCars))
     for(let i=0;i<idNumber;i++){
         details.push(Object.values(data.allCars)[i])
-
         var total = document.createElement('div');
         total.classList.add("card-body");
         total.setAttribute('id', `${details[i].carDetails.vehicleNumber}`);
