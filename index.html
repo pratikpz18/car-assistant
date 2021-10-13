@@ -75,7 +75,10 @@
                   </div>
 
                   <a class="dropdown-item" href="#">
-                    <span class="text-truncate pr-2" title="Sign out" onclick="logout()">Sign out</span>
+                    <a class="js-nav-tooltip-link nav-link" data-placement="left" href="javascript:void(0);" onclick="logout()">
+                      <i class="tio-turn-off nav-icon"></i>
+                      <span class="text-truncate pr-2" title="Sign out" onclick="logout()">Sign out</span>
+                    </a>
                   </a>
                 </div>
               </div>
@@ -140,6 +143,14 @@
                   <i class="tio-trending-up nav-icon"></i>
                   <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Car Settings</span>
                 </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="js-nav-tooltip-link nav-link " href="./chatbot.html" title="Sales Report" data-placement="left">
+                  <i class="tio-trending-up nav-icon"></i>
+                  <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">ChatBOt</span>
+                </a>
+                <!-- <iframeallow="microphone;"width="350"height="430"src="https://console.dialogflow.com/api-client/demo/embedded/82860d7a-aed4-479e-aa1c-fa991158890c"></iframe> -->
               </li>
               <!-- End Stores -->
 
