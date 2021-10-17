@@ -1,19 +1,41 @@
+var snap,idNumber;
+var details=[];
 firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
         const UID = user.uid;
-        const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value')
-        snap = await firebase.database().ref(`carOwners/${UID}/allCars`);
-        data = snapshot.val();
+        // var starCountRef = firebase.database().ref(`carOwners/${UID}`);
+        // starCountRef.on('value', (snapshot) => {
+        //     console.log(snapshot.val())
+        //     data = snapshot.val();
+        //     console.log(data)
+        //     showStats(data);
+        //     idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
+        // });
+
+        const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
+        let data = snapshot.val();
         idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
-        showStats(data);
+        showStats(data)
+        // details.push(Object.values(data.allCars)[0])
+        var arr=[];
+        await firebase.database().ref(`carOwners/${UID}/allCars/`).on('child_changed',snapshot => {
+            snapshot.forEach(element => {
+                arr.push(element.val())
+            });
+            // data = snapshot.val();
+            changeStats(arr[0],arr[1].vehicleNumber)
+            arr=[];
+            // idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
+        })
+        console.log(data);
+        // snapchanged();
     }
 })
 
-var details=[];
 function showStats(data){
     console.log(Object.values(data.allCars))
     for(let i=0;i<idNumber;i++){
-        details.push(Object.values(data.allCars)[i])
+        details.push(Object.values(data.allCars)[i]);
         var total = document.createElement('div');
         total.classList.add("card-body");
         total.setAttribute('id', `${details[i].carDetails.vehicleNumber}`);
@@ -27,7 +49,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Battery Voltage</h6>
-                    <span class="card-title h3" id="batteryVoltage">${details[i].allStatus.batteryVoltage}</span>
+                    <span class="card-title h3" id=batteryVoltage-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.batteryVoltage}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-book" aria-hidden="true"></i>
@@ -41,7 +63,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Engine Temperature</h6>
-                    <span class="card-title h3" id="engineTemp">${details[i].allStatus.engineTemp}</span>
+                    <span class="card-title h3" id=engineTemp-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.engineTemp}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-website"></i>
@@ -55,7 +77,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Suspension Level</h6>
-                    <span class="card-title h3" id="suspensionLevel">${details[i].allStatus.suspensionLevel}</span>
+                    <span class="card-title h3" id=suspensionLevel-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.suspensionLevel}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-trending-up"></i>
@@ -79,6 +101,12 @@ function showStats(data){
         </div>`;
 
         total.appendChild(contentdiv);
-        document.getElementById("content").appendChild(total); 
+        document.getElementById("content").appendChild(total);
     }
+}
+
+function changeStats(data,vehicleNumber){
+    document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp ;
+    document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage ;
+    document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel ;
 }

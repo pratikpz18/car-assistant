@@ -3,7 +3,7 @@ var snap,data,idNumber;
 firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
       const UID = user.uid;
-      const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value')
+      const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
       snap = await firebase.database().ref(`carOwners/${UID}/allCars`);
       data = snapshot.val();
       idNumber = Object.keys(data.allCars ? data.allCars : 0 ).length ;
