@@ -102,6 +102,26 @@ function showStats(data){
 
         total.appendChild(contentdiv);
 
+        var values = ["Engine Temp", "Suspension Level", "Battery"];
+        
+        var select = document.createElement("select");
+        
+        for (const val of values){
+            var option = document.createElement("option");
+            option.value = val;
+            option.text = val.charAt(0).toUpperCase() + val.slice(1);
+            select.appendChild(option);
+        }
+
+        select.onchange = function(){
+            showMovingAvg(details[i].carDetails.vehicleNumber,this.value);
+        }; //console logging what is selected
+
+        var label = document.createElement("label");
+        label.innerHTML = "Choose which graph to show: ";
+        
+        total.appendChild(label).appendChild(select);
+
         //for reating canvas dynamically
         var canvas = document.createElement('canvas');
         canvas.id = `canvas-${details[i].carDetails.vehicleNumber}`;
@@ -112,7 +132,7 @@ function showStats(data){
         total.appendChild(canvas);
 
         setTimeout(() => {
-            showMovingAvg(details[i].carDetails.vehicleNumber)
+            showMovingAvg(details[i].carDetails.vehicleNumber,'Engine Temp');
         },0);
 
         //button to show graph
@@ -196,9 +216,9 @@ function changeStats(data,vehicleNumber){
 //     }
 // }
 
-function showMovingAvg(i){
-    console.log(i)
-    let ctx = document.getElementById(`canvas-${i}`).getContext('2d'); // 2d context
+function showMovingAvg(vehicleNumber,dropdownValue){
+    console.log(vehicleNumber,dropdownValue);
+    let ctx = document.getElementById(`canvas-${vehicleNumber}`).getContext('2d'); // 2d context
 
     let movingAverageDuration = 7;
     let yRealValuesTwoWeeks = [43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56];
@@ -216,7 +236,7 @@ function showMovingAvg(i){
         sum += yRealValuesTwoWeeks[i];
         sum -= yRealValuesTwoWeeks[i - movingAverageDuration];
         yMovingAverageValuesOneWeek.push(sum / movingAverageDuration);
-        console.log(sum / movingAverageDuration);
+        // console.log(sum / movingAverageDuration);
     }
 
     let myChart = new Chart(ctx, {
