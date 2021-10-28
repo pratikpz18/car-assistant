@@ -1,21 +1,21 @@
-
-var snap,data,idNumber;
+var snap, data, idNumber;
 firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
-      const UID = user.uid;
-      const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
-      snap = await firebase.database().ref(`carOwners/${UID}/allCars`);
-      data = snapshot.val();
-      idNumber = Object.keys(data.allCars ? data.allCars : 0 ).length ;
-      showCars(data);
+    const UID = user.uid;
+    const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
+    snap = await firebase.database().ref(`carOwners/${UID}/allCars`);
+    data = snapshot.val();
+    idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
+    showCars(data);
   }
 })
 
-var details=[];
-function showCars(data){
+var details = [];
+
+function showCars(data) {
   //to add data dynamically
   console.log(data.allCars)
-  for(let i=0;i<idNumber;i++){
+  for (let i = 0; i < idNumber; i++) {
     details.push(Object.values(data.allCars)[i]);
 
     var total = document.createElement('div');
@@ -23,7 +23,7 @@ function showCars(data){
     total.setAttribute('id', `${details[i].carDetails.vehicleNumber}`);
 
     var contentdiv = document.createElement('div');
-    contentdiv.innerHTML= `<div class="card-body">
+    contentdiv.innerHTML = `<div class="card-body">
                             <div class="card-body">
                               <p class="text-primary">${details[i].carDetails.brand} ${details[i].carDetails.model}</p>
                             </div>
@@ -33,7 +33,7 @@ function showCars(data){
                           </div>`;
 
     total.appendChild(contentdiv);
-    document.getElementById("carDetails").appendChild(total); 
+    document.getElementById("carDetails").appendChild(total);
   }
 }
 
@@ -48,25 +48,34 @@ function AddNewCarDetails() {
   let brand = document.getElementById("brand").value;
   let model = document.getElementById("model").value;
   let vehicleNumber = document.getElementById("vehicleNumber").value;
-  console.log(brand,model);
+  console.log(brand, model);
   let cardetails = {
-    allStatus:{
-      batteryVoltage:14,
-      engineTemp:50,
-      suspensionLevel:50,
+    allStatus: {
+      batteryVoltage: {
+        currentValue: 14,
+        previousValues: [14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14]
+      },
+      engineTemp: {
+        currentValue: 50,
+        previousValues: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+      },
+      suspensionLevel: {
+        currentValue: 44,
+        previousValues: [44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44]
+      }
     },
-    carDetails:{
-      brand:brand,
-      model:model,
-      vehicleNumber:vehicleNumber,
+    carDetails: {
+      brand: brand,
+      model: model,
+      vehicleNumber: vehicleNumber,
     }
   }
-  if(brand.value!="" && model.value!=""){
+  if (brand.value != "" && model.value != "") {
     snap.child(`${vehicleNumber}`).set(cardetails);
-  }else{
+  } else {
     console.log("put values")
   }
-  brand.value="";
-  model.value="";
+  brand.value = "";
+  model.value = "";
   location.reload();
 }
