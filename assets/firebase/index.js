@@ -1,40 +1,27 @@
-var snap,idNumber;
-var details=[];
+var snap, idNumber;
+var details = [];
 firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
         const UID = user.uid;
-        // var starCountRef = firebase.database().ref(`carOwners/${UID}`);
-        // starCountRef.on('value', (snapshot) => {
-        //     console.log(snapshot.val())
-        //     data = snapshot.val();
-        //     console.log(data)
-        //     showStats(data);
-        //     idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
-        // });
-
         const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
         let data = snapshot.val();
         idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
         showStats(data)
-        // details.push(Object.values(data.allCars)[0])
-        var arr=[];
-        await firebase.database().ref(`carOwners/${UID}/allCars/`).on('child_changed',snapshot => {
+        var arr = [];
+        await firebase.database().ref(`carOwners/${UID}/allCars/`).on('child_changed', snapshot => {
             snapshot.forEach(element => {
                 arr.push(element.val())
             });
-            // data = snapshot.val();
-            changeStats(arr[0],arr[1].vehicleNumber)
-            arr=[];
-            // idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
+            changeStats(arr[0], arr[1].vehicleNumber)
+            arr = [];
         })
         console.log(data);
-        // snapchanged();
     }
 })
 
-function showStats(data){
+function showStats(data) {
     console.log(Object.values(data.allCars))
-    for(let i=0;i<idNumber;i++){
+    for (let i = 0; i < idNumber; i++) {
         details.push(Object.values(data.allCars)[i]);
         var total = document.createElement('div');
         total.classList.add("card-body");
@@ -49,7 +36,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Battery Voltage</h6>
-                    <span class="card-title h3" id=batteryVoltage-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.batteryVoltage}</span>
+                    <span class="card-title h3" id=batteryVoltage-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.batteryVoltage.currentValue} V</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-book" aria-hidden="true"></i>
@@ -63,7 +50,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Engine Temperature</h6>
-                    <span class="card-title h3" id=engineTemp-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.engineTemp}</span>
+                    <span class="card-title h3" id=engineTemp-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.engineTemp.currentValue} °C</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-website"></i>
@@ -77,7 +64,7 @@ function showStats(data){
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Suspension Level</h6>
-                    <span class="card-title h3" id=suspensionLevel-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.suspensionLevel}</span>
+                    <span class="card-title h3" id=suspensionLevel-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.suspensionLevel.currentValue}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-trending-up"></i>
@@ -103,26 +90,26 @@ function showStats(data){
         total.appendChild(contentdiv);
 
         var values = ["Engine Temp", "Suspension Level", "Battery"];
-        
+
         var select = document.createElement("select");
-        
-        for (const val of values){
+
+        for (const val of values) {
             var option = document.createElement("option");
             option.value = val;
             option.text = val.charAt(0).toUpperCase() + val.slice(1);
             select.appendChild(option);
         }
 
-        select.onchange = function(){
-            showMovingAvg(details[i].carDetails.vehicleNumber,this.value);
+        select.onchange = function () {
+            showMovingAvg(details[i].carDetails.vehicleNumber, this.value);
         }; //console logging what is selected
 
         var label = document.createElement("label");
         label.innerHTML = "Choose which graph to show: ";
-        
+
         total.appendChild(label).appendChild(select);
 
-        //for reating canvas dynamically
+        //for creating canvas dynamically
         var canvas = document.createElement('canvas');
         canvas.id = `canvas-${details[i].carDetails.vehicleNumber}`;
         canvas.width = 700;
@@ -132,92 +119,21 @@ function showStats(data){
         total.appendChild(canvas);
 
         setTimeout(() => {
-            showMovingAvg(details[i].carDetails.vehicleNumber,'Engine Temp');
-        },0);
-
-        //button to show graph
-        // var graph = document.createElement('div');
-        // graph.innerHTML = `<div>
-        //                     <button onclick='showMovingAvg(${details[i].carDetails.vehicleNumber})'>Show Moving Average</button>
-        //                 </div>`;
-        // total.appendChild(graph);
+            showMovingAvg(details[i].carDetails.vehicleNumber, 'Engine Temp');
+        }, 0);
 
         document.getElementById("content").appendChild(total);
     }
 }
 
-function changeStats(data,vehicleNumber){
-    document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp ;
-    document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage ;
-    document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel ;
+function changeStats(data, vehicleNumber) {
+    document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp;
+    document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage;
+    document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel;
 }
 
-// let bool = false;
-// function showMovingAvg(i){
-//     console.log(i.id); //vehiclenumber (unique for all cars)
-//     if(bool == false){
-//         var canvas = document.createElement('canvas');
-
-//         canvas.id = "myChart";
-//         canvas.width = 700;
-//         canvas.height = 200;
-//         canvas.style.zIndex = 8;
-//         canvas.style.border = "1px solid";
-//         document.getElementById(i.id).appendChild(canvas);
-
-//         let ctx = document.getElementById('myChart').getContext('2d'); // 2d context
-
-//         let movingAverageDuration = 7;
-//         let yRealValuesTwoWeeks = [43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56];
-//         let yRealValuesOneWeek = [71, 39, 44, 55, 49.9, 55, 56];
-
-//         let days = [1, 2, 3, 4, 5, 6, 7];
-
-//         let yMovingAverageValuesOneWeek = [];
-//         let sum = 0;
-//         for (let i = 0; i < movingAverageDuration; i++) {
-//             sum += yRealValuesTwoWeeks[i];
-//         }
-
-//         for (let i = movingAverageDuration; i < yRealValuesTwoWeeks.length; i++) {
-//             sum += yRealValuesTwoWeeks[i];
-//             sum -= yRealValuesTwoWeeks[i - movingAverageDuration];
-//             yMovingAverageValuesOneWeek.push(sum / movingAverageDuration);
-//             console.log(sum / movingAverageDuration);
-//         }
-
-//         let myChart = new Chart(ctx, {
-//             type: 'line',
-//             data: {
-//                 labels: days,
-//                 datasets: [{
-//                         label: 'Real values',
-//                         data: yRealValuesOneWeek,
-//                         fill: false,
-//                         borderColor: 'blue',
-//                         tension: 0.1
-//                     },
-//                     {
-//                         label: `Moving Average ${movingAverageDuration} Days`,
-//                         data: yMovingAverageValuesOneWeek,
-//                         fill: false,
-//                         borderColor: 'rgb(75, 192, 192)',
-//                         borderWidth: 1.5,
-//                         tension: 0.1
-//                     }
-//                 ]
-//             }
-//         })
-//         bool = true;
-//     }else{
-//         var  movingavggraph = document.getElementById(i.id);
-//         movingavggraph.removeChild(movingavggraph.lastChild); //to remove canvas
-//         bool = false;
-//     }
-// }
-
-function showMovingAvg(vehicleNumber,dropdownValue){
-    console.log(vehicleNumber,dropdownValue);
+function showMovingAvg(vehicleNumber, dropdownValue) {
+    console.log(vehicleNumber, dropdownValue);
     let ctx = document.getElementById(`canvas-${vehicleNumber}`).getContext('2d'); // 2d context
 
     let movingAverageDuration = 7;
@@ -236,7 +152,6 @@ function showMovingAvg(vehicleNumber,dropdownValue){
         sum += yRealValuesTwoWeeks[i];
         sum -= yRealValuesTwoWeeks[i - movingAverageDuration];
         yMovingAverageValuesOneWeek.push(sum / movingAverageDuration);
-        // console.log(sum / movingAverageDuration);
     }
 
     let myChart = new Chart(ctx, {
