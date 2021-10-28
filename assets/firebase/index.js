@@ -89,7 +89,7 @@ function showStats(data) {
 
         total.appendChild(contentdiv);
 
-        var values = ["Engine Temp", "Suspension Level", "Battery"];
+        var values = ["Engine Temperature", "Suspension Level", "Battery Voltage"];
 
         var select = document.createElement("select");
 
@@ -101,11 +101,11 @@ function showStats(data) {
         }
 
         select.onchange = function () {
-            showMovingAvg(details[i].carDetails.vehicleNumber, this.value);
-        }; //console logging what is selected
+            showMovingAvg(details[i].carDetails.vehicleNumber, this.value, i);
+        };
 
         var label = document.createElement("label");
-        label.innerHTML = "Choose which graph to show: ";
+        label.innerHTML = "Choose which graph to show : ";
 
         total.appendChild(label).appendChild(select);
 
@@ -119,7 +119,7 @@ function showStats(data) {
         total.appendChild(canvas);
 
         setTimeout(() => {
-            showMovingAvg(details[i].carDetails.vehicleNumber, 'Engine Temp');
+            showMovingAvg(details[i].carDetails.vehicleNumber, 'Engine Temperature', i);
         }, 0);
 
         document.getElementById("content").appendChild(total);
@@ -132,15 +132,46 @@ function changeStats(data, vehicleNumber) {
     document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel;
 }
 
-function showMovingAvg(vehicleNumber, dropdownValue) {
-    console.log(vehicleNumber, dropdownValue);
+async function getLabel() {
+    let allDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dt = new Date();
+    let currentDayIndex = dt.getDay();
+    let label = [];
+    for (let i = currentDayIndex + 1; i < 7; i++) {
+        label.push(allDays[i]);
+    }
+    for (let i = 0; i <= currentDayIndex; i++) {
+        label.push(allDays[i]);
+    }
+    return label;
+}
+
+async function showMovingAvg(vehicleNumber, dropdownValue, carIndex) {
     let ctx = document.getElementById(`canvas-${vehicleNumber}`).getContext('2d'); // 2d context
 
     let movingAverageDuration = 7;
-    let yRealValuesTwoWeeks = [43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56];
-    let yRealValuesOneWeek = [71, 39, 44, 55, 49.9, 55, 56];
+    let parameter = "";
+    switch (dropdownValue) {
+        case "Battery Voltage":
+            parameter = "batteryVoltage"
+            break;
 
-    let days = [1, 2, 3, 4, 5, 6, 7];
+        case "Engine Temperature":
+            parameter = "engineTemp"
+            break;
+
+        case "Suspension Level":
+            parameter = "suspensionLevel"
+            break;
+
+        default:
+            break;
+    }
+
+    let yRealValuesTwoWeeks = details[carIndex].allStatus[parameter].previousValues;
+    let yRealValuesOneWeek = yRealValuesTwoWeeks.slice(yRealValuesTwoWeeks.length - movingAverageDuration, yRealValuesTwoWeeks.length);
+
+    let labelDays = await getLabel();
 
     let yMovingAverageValuesOneWeek = [];
     let sum = 0;
@@ -157,7 +188,7 @@ function showMovingAvg(vehicleNumber, dropdownValue) {
     let myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: days,
+            labels: labelDays,
             datasets: [{
                     label: 'Real values',
                     data: yRealValuesOneWeek,
