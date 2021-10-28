@@ -101,6 +101,27 @@ function showStats(data){
         </div>`;
 
         total.appendChild(contentdiv);
+
+        //for reating canvas dynamically
+        var canvas = document.createElement('canvas');
+        canvas.id = `canvas-${details[i].carDetails.vehicleNumber}`;
+        canvas.width = 700;
+        canvas.height = 200;
+        canvas.style.zIndex = 8;
+        canvas.style.border = "1px solid";
+        total.appendChild(canvas);
+
+        setTimeout(() => {
+            showMovingAvg(details[i].carDetails.vehicleNumber)
+        },0);
+
+        //button to show graph
+        // var graph = document.createElement('div');
+        // graph.innerHTML = `<div>
+        //                     <button onclick='showMovingAvg(${details[i].carDetails.vehicleNumber})'>Show Moving Average</button>
+        //                 </div>`;
+        // total.appendChild(graph);
+
         document.getElementById("content").appendChild(total);
     }
 }
@@ -109,4 +130,115 @@ function changeStats(data,vehicleNumber){
     document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp ;
     document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage ;
     document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel ;
+}
+
+// let bool = false;
+// function showMovingAvg(i){
+//     console.log(i.id); //vehiclenumber (unique for all cars)
+//     if(bool == false){
+//         var canvas = document.createElement('canvas');
+
+//         canvas.id = "myChart";
+//         canvas.width = 700;
+//         canvas.height = 200;
+//         canvas.style.zIndex = 8;
+//         canvas.style.border = "1px solid";
+//         document.getElementById(i.id).appendChild(canvas);
+
+//         let ctx = document.getElementById('myChart').getContext('2d'); // 2d context
+
+//         let movingAverageDuration = 7;
+//         let yRealValuesTwoWeeks = [43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56];
+//         let yRealValuesOneWeek = [71, 39, 44, 55, 49.9, 55, 56];
+
+//         let days = [1, 2, 3, 4, 5, 6, 7];
+
+//         let yMovingAverageValuesOneWeek = [];
+//         let sum = 0;
+//         for (let i = 0; i < movingAverageDuration; i++) {
+//             sum += yRealValuesTwoWeeks[i];
+//         }
+
+//         for (let i = movingAverageDuration; i < yRealValuesTwoWeeks.length; i++) {
+//             sum += yRealValuesTwoWeeks[i];
+//             sum -= yRealValuesTwoWeeks[i - movingAverageDuration];
+//             yMovingAverageValuesOneWeek.push(sum / movingAverageDuration);
+//             console.log(sum / movingAverageDuration);
+//         }
+
+//         let myChart = new Chart(ctx, {
+//             type: 'line',
+//             data: {
+//                 labels: days,
+//                 datasets: [{
+//                         label: 'Real values',
+//                         data: yRealValuesOneWeek,
+//                         fill: false,
+//                         borderColor: 'blue',
+//                         tension: 0.1
+//                     },
+//                     {
+//                         label: `Moving Average ${movingAverageDuration} Days`,
+//                         data: yMovingAverageValuesOneWeek,
+//                         fill: false,
+//                         borderColor: 'rgb(75, 192, 192)',
+//                         borderWidth: 1.5,
+//                         tension: 0.1
+//                     }
+//                 ]
+//             }
+//         })
+//         bool = true;
+//     }else{
+//         var  movingavggraph = document.getElementById(i.id);
+//         movingavggraph.removeChild(movingavggraph.lastChild); //to remove canvas
+//         bool = false;
+//     }
+// }
+
+function showMovingAvg(i){
+    console.log(i)
+    let ctx = document.getElementById(`canvas-${i}`).getContext('2d'); // 2d context
+
+    let movingAverageDuration = 7;
+    let yRealValuesTwoWeeks = [43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56];
+    let yRealValuesOneWeek = [71, 39, 44, 55, 49.9, 55, 56];
+
+    let days = [1, 2, 3, 4, 5, 6, 7];
+
+    let yMovingAverageValuesOneWeek = [];
+    let sum = 0;
+    for (let i = 0; i < movingAverageDuration; i++) {
+        sum += yRealValuesTwoWeeks[i];
+    }
+
+    for (let i = movingAverageDuration; i < yRealValuesTwoWeeks.length; i++) {
+        sum += yRealValuesTwoWeeks[i];
+        sum -= yRealValuesTwoWeeks[i - movingAverageDuration];
+        yMovingAverageValuesOneWeek.push(sum / movingAverageDuration);
+        console.log(sum / movingAverageDuration);
+    }
+
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: days,
+            datasets: [{
+                    label: 'Real values',
+                    data: yRealValuesOneWeek,
+                    fill: false,
+                    borderColor: 'blue',
+                    tension: 0.1
+                },
+                {
+                    label: `Moving Average ${movingAverageDuration} Days`,
+                    data: yMovingAverageValuesOneWeek,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    borderWidth: 1.5,
+                    tension: 0.1
+                }
+            ]
+        }
+    })
 }
