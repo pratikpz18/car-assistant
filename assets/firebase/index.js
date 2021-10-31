@@ -27,6 +27,15 @@ function showStats(data) {
         total.classList.add("card-body");
         total.setAttribute('id', `${details[i].carDetails.vehicleNumber}`);
 
+        let status = 0;
+        if((details[i].allStatus.batteryVoltage.currentValue >= 12.5 && details[i].allStatus.batteryVoltage.currentValue < 15)
+        && (details[i].allStatus.engineTemp.currentValue>75 && details[i].allStatus.engineTemp.currentValue < 105 ) 
+        && (details[i].allStatus.suspensionLevel.currentValue>40 && details[i].allStatus.suspensionLevel.currentValue <60)){
+            status = 0;
+        }else{
+            status = 1;
+        }
+
         var contentdiv = document.createElement('div');
         contentdiv.innerHTML = `
         <h3 class="text-primary"><u>${details[i].carDetails.brand} ${details[i].carDetails.model}</u></h3>
@@ -78,7 +87,7 @@ function showStats(data) {
                 <div class="media">
                 <div class="media-body">
                     <h6 class="card-subtitle">Status</h6>
-                    <span class="card-title h3" id="status">Good</span>
+                    <span class="card-title h3" id=status-${details[i].carDetails.vehicleNumber}>${status == 0 ? "<h3 style='color:green'>Good</h3>" : "<h3 style='color:red'>Bad</h3>"}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
                     <i class="tio-trending-up"></i>
@@ -127,9 +136,20 @@ function showStats(data) {
 }
 
 function changeStats(data, vehicleNumber) {
-    document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp;
-    document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage;
-    document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel;
+    var stat = 0;
+    if((data.batteryVoltage.currentValue >= 12.5 && data.batteryVoltage.currentValue < 15)
+        && (data.engineTemp.currentValue>75 && data.engineTemp.currentValue < 105 )
+        && (data.suspensionLevel.currentValue>40 && data.suspensionLevel.currentValue <60) ){
+        stat = 0;
+    }else{
+        stat = 1;
+    }
+    console.log(stat)
+
+    document.getElementById(`engineTemp-${vehicleNumber}`).innerHTML = data.engineTemp.currentValue;
+    document.getElementById(`batteryVoltage-${vehicleNumber}`).innerHTML = data.batteryVoltage.currentValue;
+    document.getElementById(`suspensionLevel-${vehicleNumber}`).innerHTML = data.suspensionLevel.currentValue;
+    document.getElementById(`status-${vehicleNumber}`).innerHTML = stat == 0 ? "<h3 style='color:green'>Good</h3>" : "<h3 style='color:red'>Bad</h3>";
 }
 
 async function getLabel() {
