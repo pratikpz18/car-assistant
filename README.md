@@ -6,5 +6,5 @@ Live on : https://pratikpz18.github.io/car-assistant
 
 
 Credentials to Login 
-email : car@owners.com
+email : car@owner.com
 password : ssssssss
