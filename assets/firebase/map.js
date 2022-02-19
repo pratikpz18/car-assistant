@@ -1,3 +1,28 @@
+var pos = [];
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (user) {
+    const UID = user.uid;
+    const snapshot = await firebase.database().ref(`carOwners/${UID}`).once('value');
+    let data = snapshot.val();
+    idNumber = Object.keys(data.allCars ? data.allCars : 0).length;
+    var area = [];
+    await firebase.database().ref(`carOwners/${UID}/allCars`).on('child_changed',snapshot2 => {
+      getLocation(); //calling map
+      console.log(snapshot2.val())
+      let data2 = snapshot2.val();
+      area = data2;
+      console.log(Object.values(area))
+      for(const element of Object.values(area)){
+        // console.log(element.Position)
+        if(element.Position && element.Position.Latitude){
+          pos.push(element.Position.Latitude);
+          pos.push(element.Position.Longitude);
+        }
+      }
+    })
+  }
+})
+
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, positionError);
@@ -5,7 +30,6 @@ function getLocation() {
     console.log("Geolocation is not supported by this browser.");
   }
 }
-
 
 var latlong = [
   [19.21432146390941, 73.08750846302414],
@@ -72,7 +96,6 @@ var latlong = [
   [18.141569118057635, 73.12189695808392],
 ]
 
-
 function showPosition(position) {
   // Success, can use position.
   let lat= position.coords.latitude;
@@ -101,17 +124,67 @@ function showPosition(position) {
     popupAnchor: [1, -30],
     shadowSize: [20,20]
   });
-  
-  // console.log(latlong[0][0],latlong[0][1])
-  for (let i = 0; i < latlong.length; i++) {
 
-    const marker = L.marker([latlong[i][0],latlong[i][1]],{icon: greenIcon});
+  // let lat= pos[0];
+  // let long = pos[1];
+
+  // var element = document.getElementById('osm-map');
+  // // Height has to be set. You can do this in CSS too.
+  // element.style = 'height:300px;';
+  // // Create Leaflet map on map element.
+  // var map = L.map(element);
+  // // Add OSM tile layer to the Leaflet map.
+  // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  // }).addTo(map);
+  // // Target's GPS coordinates.
+  // var target = L.latLng(lat,long);
+  // // Set map's center to target with zoom 14.
+  // map.setView(target, 12);
+  // // Place a marker on the same location.
+  // L.marker(target).addTo(map);
+  // var greenIcon = new L.Icon({
+  //   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  //   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  //   iconSize: [18, 26],
+  //   iconAnchor: [12, 20],
+  //   popupAnchor: [1, -30],
+  //   shadowSize: [20,20]
+  // });
+  
+  // let lat2 = pos[0];
+  // let long2 = pos[1];
+  // // Target's GPS coordinates.
+  // var target2 = L.latLng(lat2,long2);
+  // // Set map's center to target with zoom 14.
+  // map.setView(target2, 12);
+  // // Place a marker on the same location.
+  // L.marker(target2).addTo(map);
+  // var greenIcon = new L.Icon({
+  //   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  //   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  //   iconSize: [21, 29],
+  //   iconAnchor: [12, 20],
+  //   popupAnchor: [1, -30],
+  //   shadowSize: [20,20]
+  // });
+
+  // // console.log(latlong[0][0],latlong[0][1])
+  
+  for (let i = 0; i < latlong.length; i++) {
+    if(pos){
+      console.log(pos)
+      const marker2 = L.marker([pos[0],pos[1]]);
+      marker2.addTo(map);
+    }
+      const marker = L.marker([latlong[i][0],latlong[i][1]],{icon: greenIcon});
+      console.log(pos)
+      marker.addTo(map);
+    
     // marker.myData = { id: latlong[i.toString()] };
     // marker.on('click', function(e) {
     //   alert(marker.myData.id);
     // });
-
-    marker.addTo(map);
   }
 }
 
@@ -132,5 +205,3 @@ function showError(message) {
   var element = document.getElementById('map');
   element.innerHTML = message;
 }
-
-getLocation();
