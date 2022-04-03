@@ -1,0 +1,66 @@
+{
+  "carOwners" : {
+    "cpRmCzRLNrMIf83kPXDqqwtVsUc2" : {
+      "allCars" : {
+        "MH05DH5667" : {
+          "allStatus" : {
+            "Position" : {
+              "Latitude" : 19.20489,
+              "Longitude" : 72.95169
+            },
+            "batteryVoltage" : {
+              "currentValue" : 14,
+              "previousValues" : [ 14, 13, 15.5, 11, 12, 11, 16, 11, 12, 14, 15, 13.5, 14, 14.5 ]
+            },
+            "engineTemp" : {
+              "currentValue" : 31.9,
+              "previousValues" : [ 43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56 ]
+            },
+            "suspensionLevel" : {
+              "currentValue" : 46,
+              "previousValues" : [ 49, 51, 40.8, 60, 71, 48, 55, 59, 79, 46, 54, 49.9, 55, 58 ]
+            },
+            "toe" : {
+              "toeIn" : 0
+            }
+          },
+          "carDetails" : {
+            "brand" : "Tata",
+            "model" : "Harrier",
+            "vehicleNumber" : "MH05DH5667"
+          }
+        },
+        "MH07AD5436" : {
+          "allStatus" : {
+            "Position" : {
+              "Latitude" : 19.21465,
+              "Longitude" : 72.95168
+            },
+            "batteryVoltage" : {
+              "currentValue" : 14,
+              "previousValues" : [ 14, 13, 15.5, 11, 12, 11, 16, 11, 12, 14, 15, 13.5, 14, 14.5 ]
+            },
+            "engineTemp" : {
+              "currentValue" : 79,
+              "previousValues" : [ 43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56 ]
+            },
+            "suspensionLevel" : {
+              "currentValue" : 44,
+              "previousValues" : [ 43, 53, 45.5, 41, 42, 49, 36, 71, 39, 44, 55, 49.9, 55, 56 ]
+            }
+          },
+          "carDetails" : {
+            "brand" : "Tata",
+            "model" : "Nexon",
+            "vehicleNumber" : "MH07AD5436"
+          }
+        }
+      },
+      "details" : {
+        "contactNo" : 9876543210,
+        "email" : "car@owner.com",
+        "name" : "Sample Name"
+      }
+    }
+  }
+}
