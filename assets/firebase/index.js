@@ -72,7 +72,7 @@ function showStats(data) {
             <div class="col-sm-6 col-lg-3 column-divider-lg">
                 <div class="media">
                 <div class="media-body">
-                    <h6 class="card-subtitle">Suspension Level</h6>
+                    <h6 class="card-subtitle">Toe Level</h6>
                     <span class="card-title h3" id=suspensionLevel-${details[i].carDetails.vehicleNumber}>${details[i].allStatus.suspensionLevel.currentValue}</span>
                 </div>
                 <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
@@ -98,7 +98,7 @@ function showStats(data) {
 
         total.appendChild(contentdiv);
 
-        var values = ["Engine Temperature", "Suspension Level", "Battery Voltage"];
+        var values = ["Engine Temperature", "Toe Level", "Battery Voltage"];
 
         var select = document.createElement("select");
 
