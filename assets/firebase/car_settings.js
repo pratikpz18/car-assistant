@@ -59,7 +59,7 @@ function AddNewCarDetails() {
         currentValue: 50,
         previousValues: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
       },
-      suspensionLevel: {
+      toeLevel: {
         currentValue: 44,
         previousValues: [44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44]
       }
